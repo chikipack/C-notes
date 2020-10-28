@@ -21,7 +21,7 @@ void* myTurn(void* arg){
     int *ptr = (int*)arg;
     for(int i=0;i<8; i++){
         sleep(1);
-        printf("my turn! %d ||%c\n", i,*ptr);
+        printf("my turn! %d ||%d\n", i,*ptr);
         (*ptr)++;
     }
     return NULL;
