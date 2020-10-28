@@ -5,10 +5,23 @@
 #include <string.h>
 
 void* myTurn(void* arg){
-    float *ptr = (float*)arg;
+    //here we create a integer pointer because we're reciving a integer type
+    //from the main function
+    //then, arg is a void pointer so we need to cast into a integer pointer
+
+    //Conclusion: if we recive a variable (int, char, etc) from the main function
+    //and senden by the last parameter un pthread_create function, 
+    //that variabel we need to recived in a pointer of that variable 
+    //example:
+    // we send a integer from main
+    // in the funcition we recive that variable as a integer pointer
+    // main -> int
+    // the_function -> int *
+    //and then the arg must be casted from void* (void pointer) to type* (any type pointer)
+    int *ptr = (int*)arg;
     for(int i=0;i<8; i++){
         sleep(1);
-        printf("my turn! %d ||%f\n", i,*ptr);
+        printf("my turn! %d ||%c\n", i,*ptr);
         (*ptr)++;
     }
     return NULL;
@@ -34,7 +47,7 @@ int main(){
     pthread_create(&th1, NULL, myTurn,&v);
     yourTurn();
     pthread_join(th1, NULL);
-    printf("Thread is done, the actual value of v is: %f\n",v);
+    printf("Thread is done, the actual value of v is: %i\n",v);
 
     return 0;
 }
