@@ -59,14 +59,34 @@ char *getHomePage(char *ipaddr, int *bytesread){
     {
         return NULL;
     }
-    
-    
+
+    //we're connected, Prepare the message
+    sprintf(sendline,"GET / HTTP/1.1\r\n\r\n");
+    sendbytes = strlen(sendline);
+
+    //send the request
+    if (write(sockfd, sendline, sendbytes) != sendbytes){
+        return NULL;
+    }
+    memset(buffer, 0, MAXLINE);
+
+    //now read the first MAXLINE server's response
+    n = read(sockfd, buffer, MAXLINE-1);
+    if (n<0){
+        return NULL;
+    }
+    *bytesread = n;
+    return buffer;
 }
 
 int main(){
     pthread_t thread;
+    char *buf;
+    int buflen;
+
     pthread_create(&thread, NULL, count_to_big, NULL);
-    count_to_big(NULL);
+    //count_to_big(NULL);
+    buf = getHomePage("172.217.0.78", &buflen);
     pthread_join(thread, NULL);
-    printf("Done. Counter = %u\n",counter);
+    printf("Done. Counter = %u. Recved %d bytes\n",counter, buflen);
 }
