@@ -11,6 +11,8 @@
 *   int sem_post(sem_t *sem);
 */
 
+//UPDATE: this are UNNAMED SEMAPHORES!!!
+
 void * functionINC(void * arg);
 void * functionDEC(void * arg);
 
