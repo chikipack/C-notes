@@ -31,9 +31,9 @@ pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 void * count_to_big(void * arg){
     for(uint32_t i=0; i<BIG; i++){
-        pthread_mutex_lock(&lock);
+        //pthread_mutex_lock(&lock);
         counter++;
-        pthread_mutex_unlock(&lock); 
+        //pthread_mutex_unlock(&lock); 
     }
 }
 
