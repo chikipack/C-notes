@@ -17,7 +17,7 @@ int main(void){
     int initial_value_semA;
     int initial_value_semB;
     //0644 means:
-    //0 is for octan initiation
+    //0 is for octal initiation
     /*
         then the next 3 numbers are for the permision to USER - GROUP - OTHER
                                                             6       4       4
@@ -28,9 +28,11 @@ int main(void){
     semA = sem_open(SEMAPH_NAME_A, O_CREAT | O_EXCL, 0644, 1);
     semB = sem_open(SEMAPH_NAME_B, O_CREAT | O_EXCL, 0644, 0);
 
+    //sem_getvalue regresa un entero del valor inicial del semaforo
     sem_getvalue(semA, &initial_value_semA);
     sem_getvalue(semB, &initial_value_semB);
 
     printf("el valor inicial del semA es: %d \n",initial_value_semA);
     printf("el valor inicial del semB es: %d \n",initial_value_semB);
+
 }
