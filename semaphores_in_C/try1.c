@@ -39,6 +39,7 @@ int main()
 
   //2.- Crear los hilos
   pthread_create(&prod,NULL,(void*)produce,NULL);
+  sleep(3);
   pthread_create(&cons,NULL,(void*)consume,NULL);
 
   pthread_join(prod,NULL);
