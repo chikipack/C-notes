@@ -52,6 +52,7 @@ int main()
   pthread_join(prod,NULL);
   pthread_join(prod_2,NULL);
   pthread_join(cons,NULL);
+  pthread_join(cons_2,NULL);
 
   //5.-Eliminar el semáforo
   sem_close(sem_prod);
@@ -94,7 +95,7 @@ void * consume(){
   {
     //4.-Administrar el semáforo
     sem_wait(sem_prod);
-    printf("consumiendo: %d\n",varCrit);
+    printf("consumiendo lo de prod1: %d\n",varCrit);
     sem_post(sem_cons);
   }
   
@@ -105,7 +106,7 @@ void * consume_2(){
   {
     //4.-Administrar el semáforo
     sem_wait(sem_prod_2);
-    printf("consumiendo: %d\n",varCrit);
+    printf("consumiendo lo de prod2: %d\n",varCrit);
     sem_post(sem_cons);
   }
   
