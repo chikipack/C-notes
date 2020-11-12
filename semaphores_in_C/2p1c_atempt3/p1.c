@@ -8,6 +8,8 @@ sem_t *sem_prod1;
 sem_t *sem_cons;
 sem_t *sem_prod2;
 
+int varCrit=0;
+
 void * producir(){
     sem_prod1 = sem_open("/semaphA",0);
     sem_cons = sem_open("/semaphB",0);
@@ -15,8 +17,8 @@ void * producir(){
 
     while (1){
         sem_wait(sem_prod1);
-        printf("produciendo en P1\n");
-        sleep(1);
+        varCrit++;
+        printf("produciendo en P1: %d\n",varCrit);
         sem_post(sem_cons);
     }
     
@@ -28,7 +30,7 @@ void * consumir(){
 
     while (1){
         sem_wait(sem_cons);
-        printf("consumiendo P1\n");
+        printf("consumiendo: %d\n",varCrit);
         sleep(1);
         sem_post(sem_prod1);
     }
@@ -41,8 +43,9 @@ void * producir2(){
 
     while (1){
         sem_wait(sem_prod2);
-        printf("\tproduciendo en P2\n");
-        sleep(1);
+        varCrit++;
+        printf("\tproduciendo en P2: %d\n",varCrit);
+        
         sem_post(sem_cons);
     }
     
@@ -54,7 +57,7 @@ void * consumir2(){
 
     while (1){
         sem_wait(sem_cons);
-        printf("\tConsumiendo P2\n");
+        printf("Consumiendo: %d\n",varCrit);
         sleep(1);
         sem_post(sem_prod2);
     }

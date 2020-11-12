@@ -21,9 +21,9 @@ int main(void){
     int initial_value_semB;
     int initial_value_semC;
 
-    semA = sem_open(SEMAPH_NAME_A, O_CREAT | O_EXCL, 0644, 1);
-    semC = sem_open(SEMAPH_NAME_C, O_CREAT | O_EXCL, 0644, 1);
-    semB = sem_open(SEMAPH_NAME_B, O_CREAT | O_EXCL, 0644, 0);
+    semA = sem_open(SEMAPH_NAME_A, O_CREAT | O_EXCL, 0644, 0);
+    semC = sem_open(SEMAPH_NAME_C, O_CREAT | O_EXCL, 0644, 0);
+    semB = sem_open(SEMAPH_NAME_B, O_CREAT | O_EXCL, 0644, 1);
 
     //sem_getvalue regresa un entero del valor inicial del semaforo
     sem_getvalue(semA, &initial_value_semA);
