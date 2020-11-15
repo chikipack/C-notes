@@ -28,6 +28,7 @@ int main(){
     sem_init(&sm,SHARED,1);
 
     pthread_create(&ptid, NULL, producer, NULL);
+    //pass the variable a,b,c as parameter to the thread so we can identify the thread
     pthread_create(&ctid1, NULL, consumer, (void*)a);
     pthread_create(&ctid2, NULL, consumer, (void*)b);
     pthread_create(&ctid3, NULL, consumer, (void*)c);
