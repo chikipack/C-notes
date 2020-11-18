@@ -97,7 +97,23 @@ void * consumer(void * no){
     return NULL;
 }
 
-//la funcion preguntar a mi parecer es la mas importante ya que aqui es donde se lleva a acabo la magia 
+/*
+la funcion preguntar a mi parecer es la mas importante ya que aqui es donde se lleva a acabo la magia de las secciones criticas
+lo que se hace en esta funcion es:
+    preguntar si puedo acceder a la seccion critica 1
+    puedo entrar a la SC1?
+        a.- si la respuesta es si: escribo el dato en la SC1 data1
+        b.- si la respuesta es no: pregunto si puedo acceder a la SC2 data2
+            I.-si la respues es si: escribo el dato en la SC2 data2
+            II.- si la respuesta es no: se vuelve a llamar la funcion preguntar para preguntar si ya se puede usar la SC1
+    ahora lo que hacen los semaforos en esta funcion es bloquear la seccion critica con semaforoz cruzados
+    es decir
+    se bloquea sm para que nadia mas pueda entrar a escribir
+    se escribe 
+    se desbloquea sm_cons para que se pueda consumir el dato 
+    y se deja bloqueado para que nadie mas pueda entrar a escribir hasta que el dato sea consumido (ver funcion preguntar_consumidor() )
+    esto sucede con ambas secciones criticas
+*/
 
 void preguntar(int num){
     int numero=num;
@@ -121,6 +137,12 @@ void preguntar(int num){
         return NULL;
     }
 }
+
+/*
+la funcion preguntar consumidor hace lo mismo que la funcion preguntar
+la diferencia es que lee el dato escrito en la seccion critica, lo imprime y libera la seccion critica
+para que otro productor pueda entrar a sobreescribir el dato que ya no nos sirve porque ya fue leido
+*/
 
 void preguntar_consumidor(){
     if (sem_trywait(&sm_cons)==-1){
