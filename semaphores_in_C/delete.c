@@ -121,16 +121,16 @@ void preguntar(int num){
         printf("seccion critica 1 OCUPADA, intentando entrar a seccion critica 2\n");
         if (sem_trywait(&sm2)==-1){
             printf("seccion critica 2 OCUPADA, intentando entrar a seccion critica 1\n");
-            //preguntar(numero);
+            preguntar(numero);
         }else{
-            printf("accediste a la seccion critica 2\n");
+            printf("Productor entro a la seccion critica 2\n");
             data2 = num;
             printf("data2:%d\n",data2);
             sem_post(&sm2_cons);
             return NULL;
         }
     }else{
-        printf("entraste en la seccion critica 1\n");
+        printf("Productor entro en la seccion critica 1\n");
         data1 = num;
         printf("data1:%d\n",data1);
         sem_post(&sm_cons);
@@ -149,7 +149,7 @@ void preguntar_consumidor(){
         printf("no se puede Consumir lo que esta en la SC1, intentando consumir lo de la SC2\n");
         if(sem_trywait(&sm2_cons)==-1){
             printf("no se puede consumir lo de SC2, intentando consumir SC1\n");
-            //preguntar_consumidor();
+            preguntar_consumidor();
         }else{
             printf("Consumidor entro a la SC2\n");
             printf("Consumiendo:%d\n",data2);
