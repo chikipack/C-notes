@@ -51,13 +51,23 @@ int main(){
     return 0;
 }
 
-//YA NOMAS FALTA PONER LOS PUTOS FOR Y YA ALV CHINGO ASUMADRE LA TAREAAA
+/*
+La funcion Producer lo que hace es 
+1.- notifica la creacion del hilo e imprime su identificador
+2.-crea un ciclo con N iteraciones que son las producciones a realizar
+3.- dentro del ciclo for se bloquea el primer semaforo (empty)
+este primer semaforo tiene un valor inicial de 2, por lo que pueden entrar dos hilos productores al mismo tiempo
+sin embargo, esta no es la seccion critica
+4.- una vez bloqueado el semaforo empty manda a llamara la funcion preguntar() //ver en los comentarios de la seccion preguntar
+5.-una vez finalazada la funcion preguntar desbloquea el semaforo full para que el consumidor pueda consumir
+
+*/
 void * producer(void * no){
     int produced=0;
     int *thread = (int*)no;
     printf("\nProducer %d Created---",*thread);
     printf("Producer id is %ld\n",pthread_self());
-    for(produced=0;produced<3;produced++){
+    for(produced=0;produced<30;produced++){
         sem_wait(&empty);
             preguntar(produced);
         sem_post(&full);
@@ -65,18 +75,29 @@ void * producer(void * no){
     return NULL;
 }
 
+/*
+lo que hace la funcion consumer es lo siguiente:
+1.-notifica la creacion del hilo consumidor e imprime su identificador
+2.-crea un ciclo con n iteraciones que en teoria, deberian ser las mismas que las del productor para que pueda consumir las producciones
+3.-se bloquea el semaforo full para que no puedan entrar mas de 2 consumidores al mismo tiempo
+4.-se llama la funcion preguntar_consumido()//ver los comentarios de la funcion preguntar_consumidor()
+5.-se libera el semaforo productor para que este siga produciendo
+*/
+
 void * consumer(void * no){
     int consumed;
     int *thread = (int*)no;
     printf("\nConsumer %d created---",*thread);
     printf("Consumer id is %ld\n",pthread_self());
-    for(consumed=0;consumed<3;consumed++){
+    for(consumed=0;consumed<30;consumed++){
         sem_wait(&full);
             preguntar_consumidor();
         sem_post(&empty);
     }
     return NULL;
 }
+
+//la funcion preguntar a mi parecer es la mas importante ya que aqui es donde se lleva a acabo la magia 
 
 void preguntar(int num){
     int numero=num;
