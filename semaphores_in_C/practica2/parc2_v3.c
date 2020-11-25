@@ -25,8 +25,11 @@ int data1, data2, data3, data4, data5, data6;
 
 void crear_semaforos_CS();
 void * producer();
-int producir();
+void * consumer();
+void producir();
+void consumir();
 void preguntar();
+void preguntar_consumidor();
 
 int main(){
 
@@ -56,8 +59,10 @@ void * producer(void * no){
 
     int contador2222=1;
     int dato2=2222;
+
     // int contador3333=1;
     // int contador4444=1;
+
     int *thread = (int*)no;
     printf("Hi, i'm the producer %d -- ID: %ld\n",*thread,pthread_self());
     switch (*thread){
@@ -81,19 +86,25 @@ void * producer(void * no){
     }
 }
 
-int producir(int contador, int dato){
+void producir(int contador, int dato){
     int count=contador;
     for(int i=0;i<PRODUCCIONES;i++){
         sem_wait(&in_main_section);
             preguntar(count, dato);
             sem_getvalue(&in_main_section,&value);
-        printf("valor del semaforo%d\n",value);
-        printf("contador %d\n",count);
-        count++;
-        printf("dato:%d\n",dato);
+            printf("valor del semaforo: %d\n",value);
+            printf("produccion #%d\n",count);
+            count++;
+            printf("dato: %d\n",dato);
+        sem_post(&out_main_section);
     }
 
 }
+
+void consumir(){
+
+}
+
 
 void crear_semaforos_CS(){
 
@@ -153,4 +164,38 @@ void preguntar(){
         printf("Productor entro en la seccion critica 1\n");
         return;
     }
+}
+
+void preguntar_consumidor(){
+    if (sem_trywait(&crit_sec_cons[0])==-1){
+        printf("no se puede Consumir lo que esta en la SC1, intentando consumir lo de la SC2\n");
+        if(sem_trywait(&crit_sec_cons[1])==-1){
+            printf("no se puede consumir lo de SC2, intentando consumir SC3\n");
+            if(sem_trywait(&crit_sec_cons[2])==-1){
+                printf("no se puede consumir lo de SC3, intentando consumir SC4\n");
+                if(sem_trywait(&crit_sec_cons[3])==-1){
+                    printf("no se puede consumir lo de SC4, intentando consumir SC5\n");
+                    if(sem_trywait(&crit_sec_cons[4])==-1){
+                        printf("no se puede consumir lo de SC5, intentando consumir SC6\n");
+                        if(sem_trywait(&crit_sec_cons[5])==-1){
+                            printf("no se puede consumir lo de SC6, intentando consumir SC1\n");
+                            preguntar_consumidor();
+                        }else{
+                            printf("se consumio SC6\n");
+                        }
+                    }else{
+                        printf("se consumio SC5\n");
+                    }
+                }else{
+                    printf("se consumio SC4\n");
+                }
+            }else{
+                printf("se consumio SC3\n");
+            }
+        }else{
+            printf("se consumio SC2\n");
+        }
+    }else{
+        printf("se consumio SC1\n");
+    }   
 }
