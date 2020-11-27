@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <unistd.h>
 #define SHARED 1
-#define PRODUCCIONES 100
+#define PRODUCCIONES 10000
 
 int value;
 
@@ -123,7 +123,7 @@ void * consumer(void * no){
     //este for nomas es para ver que jale 
     //debemos de quitarlo y usar un while que pueda terminar de alguna forma
     
-    for (int i = 0; i<200; i++){
+    for (int i = 0; i<20000; i++){
         consumir();
     }
     
@@ -331,7 +331,7 @@ void preguntar_consumidor(){
                         case 2222:
                         printf("se guardo el dato 2222\n");
                         sem_wait(&escribiendo);
-                        fichero2 = fopen("unos.txt","a");
+                        fichero2 = fopen("doses.txt","a");
                         fprintf(fichero2,"%d\n",data4);
                         sem_post(&escribiendo);
                         sem_post(&crit_sec[3]);
@@ -482,6 +482,12 @@ void escribir_txt(int numero){
     int dato_almacenar = numero;
     switch (dato_almacenar){
     case 1111:
+        printf("se guardo el dato 1111\n");
+        sem_wait(&escribiendo);
+        fichero1 = fopen("unos.txt","a");
+        fprintf(fichero1,"%d\n",data1);
+        sem_post(&escribiendo);
+        sem_post(&crit_sec[0]);
         break;
     
     default:
