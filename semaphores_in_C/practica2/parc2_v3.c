@@ -54,6 +54,7 @@ int main(){
 
     pthread_create(&cons1,NULL,consumer,(void*)a);
     pthread_create(&cons2,NULL,consumer,(void*)b);
+    pthread_create(&cons3,NULL,consumer,(void*)c);
     
     pthread_join(prod1,NULL);
     pthread_join(prod2,NULL);
@@ -62,6 +63,7 @@ int main(){
 
     pthread_join(cons1,NULL);
     pthread_join(cons2,NULL);
+    pthread_join(cons3,NULL);
 
     
     return 0;
@@ -123,26 +125,24 @@ void * consumer(void * no){
     printf("\nConsumer %d created-ID %d",*thread,pthread_self());
     //este for nomas es para ver que jale 
     //debemos de quitarlo y usar un while que pueda terminar de alguna forma
-    
-    for (int i = 0; i<400; i++){
+    if (*thread == 1 || *thread == 2){
+        for (int i = 0; i<266; i++){
+            consumir();
+        }
+    }else{
+        for (int i = 0; i<268; i++){
         consumir();
+        }
     }
     
-
-    // while(consumos_totales != 400){
-    //     /*
-    //     este ciclo va a estar activo 3 veces al mismo tiempo 
-    //     solo hay que estar revisando las 6 secciones criticas, en algun momneto algun hilo va a poder consumir algo 
-    //     en cada sc le ponemos la funcion y le madamos el dato
-    //     */
-    //    consumir();
-       
+    
+    // for (int i = 0; i<400; i++){
+    //     consumir();
     // }
-
-    // for(int i=0;i<PRODUCCIONES;i++){
-    //     sem_wait(&out_main_section);
-    //         preguntar_consumidor();
-    //     sem_post(&in_main_section);
+    
+    
+    // while(consumos_totales<=799){
+    //    consumir();
     // }
 }
 
@@ -156,7 +156,7 @@ void consumir(){
 
 void crear_semaforos_CS(){
 
-    sem_init(&in_main_section, SHARED, 1);//empieza en 6 para poder acceder a las 6 secciones criticas
+    sem_init(&in_main_section, SHARED, 6);//empieza en 6 para poder acceder a las 6 secciones criticas
     sem_init(&out_main_section,SHARED,0);
     sem_init(&escribiendo,SHARED,1);
 
@@ -239,272 +239,26 @@ void preguntar_consumidor(){
                         }else{
                             printf("se consumio SC6\n");
                             escribir_txt(5,data6);
-                            // switch(data6){
-                            //     case 1111:
-                            //     printf("se guardo el dato 1111\n");
-                            //     sem_wait(&escribiendo);
-                            //         consumos_totales++;
-                            //         fichero1 = fopen("unos.txt","a");
-                            //         fprintf(fichero1,"%d\n",data6);
-                            //     sem_post(&escribiendo);
-                            //     sem_post(&crit_sec[5]);
-                            //     break;
-
-                            //    case 2222:
-                            //     printf("se guardo el dato 2222\n");
-                            //     sem_wait(&escribiendo);
-                            //     consumos_totales++;
-                            //     fichero2 = fopen("doses.txt","a");
-                            //     fprintf(fichero2,"%d\n",data6);
-                            //     sem_post(&escribiendo);
-                            //     sem_post(&crit_sec[5]);
-                            //     break;
-
-                            //     case 3333:
-                            //     printf("se guardo el dato 3333\n");
-                            //     sem_wait(&escribiendo);
-                            //     consumos_totales++;
-                            //     fichero3 = fopen("tres.txt","a");
-                            //     fprintf(fichero3,"%d\n",data6);
-                            //     sem_post(&escribiendo);
-                            //     sem_post(&crit_sec[5]);
-                            //     break;
-
-                            //     case 4444:
-                            //     printf("se guardo el dato 4444\n");
-                            //     sem_wait(&escribiendo);
-                            //     consumos_totales++;
-                            //     fichero4 = fopen("cuatros.txt","a");
-                            //     fprintf(fichero4, "%d\n",data6);
-                            //     sem_post(&escribiendo);
-                            //     sem_post(&crit_sec[5]);
-                            //     break;
-                            // }
                         }
                     }else{
                         printf("se consumio SC5\n");
                         escribir_txt(4,data5);
-                        // switch(data5){
-                        //     case 1111:
-                        //     printf("se guardo el dato 1111\n");
-                        //     sem_wait(&escribiendo);
-                        //     consumos_totales++;
-                        //     fichero1 = fopen("unos.txt","a");
-                        //     fprintf(fichero1,"%d\n",data5);
-                        //     sem_post(&escribiendo);
-                        //     sem_post(&crit_sec[4]);
-                        //     break;
-
-                        //     case 2222:
-                        //     printf("se guardo el dato 2222\n");
-                        //     sem_wait(&escribiendo);
-                        //     consumos_totales++;
-                        //     fichero2 = fopen("doses.txt","a");
-                        //     fprintf(fichero2,"%d\n",data5);
-                        //     sem_post(&escribiendo);
-                        //     sem_post(&crit_sec[4]);
-                        //     break;
-
-                        //     case 3333:
-                        //     printf("se guardo el dato 3333\n");
-                        //     sem_wait(&escribiendo);
-                        //     consumos_totales++;
-                        //     fichero3 = fopen("tres.txt","a");
-                        //     fprintf(fichero3,"%d\n",data5);
-                        //     sem_post(&escribiendo);
-                        //     sem_post(&crit_sec[4]);
-                        //     break;
-
-                        //     case 4444:
-                        //     printf("se guardo el dato 4444\n");
-                        //     sem_wait(&escribiendo);
-                        //     consumos_totales++;
-                        //     fichero4 = fopen("cuatros.txt","a");
-                        //     fprintf(fichero4,"%d\n",data5);
-                        //     sem_post(&escribiendo);
-                        //     sem_post(&crit_sec[4]);
-                        //     break;
-                        // }
                     }
                 }else{
                     printf("se consumio SC4\n");
                     escribir_txt(3,data4);
-                    // switch(data4){
-                    //     case 1111:
-                    //     printf("se guardo el dato 1111\n");
-                    //     sem_wait(&escribiendo);
-                    //     consumos_totales++;
-                    //     fichero1 = fopen("unos.txt","a");
-                    //     fprintf(fichero1,"%d\n",data4);
-                    //     sem_post(&escribiendo);
-                    //     sem_post(&crit_sec[3]);
-                    //     break;
-
-                    //     case 2222:
-                    //     printf("se guardo el dato 2222\n");
-                    //     sem_wait(&escribiendo);
-                    //     consumos_totales++;
-                    //     fichero2 = fopen("doses.txt","a");
-                    //     fprintf(fichero2,"%d\n",data4);
-                    //     sem_post(&escribiendo);
-                    //     sem_post(&crit_sec[3]);
-                    //     break;
-
-                    //     case 3333:
-                    //     printf("se guardo el dato 3333\n");
-                    //     sem_wait(&escribiendo);
-                    //     consumos_totales++;
-                    //     fichero3 = fopen("tres.txt","a");
-                    //     fprintf(fichero3,"%d\n",data4);
-                    //     sem_post(&escribiendo);
-                    //     sem_post(&crit_sec[3]);
-                    //     break;
-
-                    //     case 4444:
-                    //     printf("se guardo el dato 4444\n");
-                    //     sem_wait(&escribiendo);
-                    //     consumos_totales++;
-                    //     fichero4 = fopen("cuatros.txt","a");
-                    //     fprintf(fichero4,"%d\n",data4);
-                    //     sem_post(&escribiendo);
-                    //     sem_post(&crit_sec[3]);
-                    //     break;
-                    //     }
                 }
             }else{
                 printf("se consumio SC3\n");
                 escribir_txt(2,data3);
-                // switch(data3){
-                //     case 1111:
-                //     printf("se guardo el dato 1111\n");
-                //     sem_wait(&escribiendo);
-                //     consumos_totales++;
-                //     fichero1 = fopen("unos.txt","a");
-                //     fprintf(fichero1,"%d\n",data3);
-                //     sem_post(&escribiendo);
-                //     sem_post(&crit_sec[2]);
-                //     break;
-
-                //     case 2222:
-                //     printf("se guardo el dato 2222\n");
-                //     sem_wait(&escribiendo);
-                //     consumos_totales++;
-                //     fichero2 = fopen("doses.txt","a");
-                //     fprintf(fichero2,"%d\n",data3);
-                //     sem_post(&escribiendo);
-                //     sem_post(&crit_sec[2]);
-                //     break;
-
-                //     case 3333:
-                //     printf("se guardo el dato 3333\n");
-                //     sem_wait(&escribiendo);
-                //     consumos_totales++;
-                //     fichero3 = fopen("tres.txt","a");
-                //     fprintf(fichero3,"%d\n",data3);
-                //     sem_post(&escribiendo);
-                //     sem_post(&crit_sec[2]);
-                //     break;
-
-                //     case 4444:
-                //     printf("se guardo el dato 4444\n");
-                //     sem_wait(&escribiendo);
-                //     consumos_totales++;
-                //     fichero4 = fopen("cuatros.txt","a");
-                //     fprintf(fichero4,"%d\n",data3);
-                //     sem_post(&escribiendo);
-                //     sem_post(&crit_sec[2]);
-                //     break;                    
-                // }
             }
         }else{
             printf("se consumio SC2\n");
             escribir_txt(1,data2);
-            // switch(data2){
-            //     case 1111:
-            //     printf("se guardo el dato 1111\n");
-            //     sem_wait(&escribiendo);
-            //     consumos_totales++;
-            //     fichero1 = fopen("unos.txt","a");
-            //     fprintf(fichero1,"%d\n",data2);
-            //     sem_post(&escribiendo);
-            //     sem_post(&crit_sec[1]);
-            //     break;
-
-            //     case 2222:
-            //     printf("se guardo el dato 2222\n");
-            //     sem_wait(&escribiendo);
-            //     consumos_totales++;
-            //     fichero2 = fopen("doses.txt","a");
-            //     fprintf(fichero2,"%d\n",data2);
-            //     sem_post(&escribiendo);
-            //     sem_post(&crit_sec[1]);
-            //     break;
-
-            //     case 3333:
-            //     printf("se guardo el dato 3333\n");
-            //     sem_wait(&escribiendo);
-            //     consumos_totales++;
-            //     fichero3 = fopen("tres.txt","a");
-            //     fprintf(fichero3,"%d\n",data2);
-            //     sem_post(&escribiendo);
-            //     sem_post(&crit_sec[1]);
-            //     break;
-
-            //     case 4444:
-            //     printf("se guardo el dato 4444\n");
-            //     sem_wait(&escribiendo);
-            //     consumos_totales++;
-            //     fichero4 = fopen("cuatros.txt","a");
-            //     fprintf(fichero4,"%d\n",data2);
-            //     sem_post(&escribiendo);
-            //     sem_post(&crit_sec[1]);
-            //     break;                    
-            // }
         }
     }else{
         printf("se consumio SC1\n");
         escribir_txt(0,data1);
-        // switch(data1){
-        //     case 1111:
-        //     printf("se guardo el dato 1111\n");
-        //     sem_wait(&escribiendo);
-        //     consumos_totales++;
-        //     fichero1 = fopen("unos.txt","a");
-        //     fprintf(fichero1,"%d\n",data1);
-        //     sem_post(&escribiendo);
-        //     sem_post(&crit_sec[0]);
-        //     break;
-
-        //     case 2222:
-        //     printf("se guardo el dato 2222\n");
-        //     sem_wait(&escribiendo);
-        //     consumos_totales++;
-        //     fichero2 = fopen("doses.txt","a");
-        //     fprintf(fichero2,"%d\n",data1);
-        //     sem_post(&escribiendo);
-        //     sem_post(&crit_sec[0]);
-        //     break;
-
-        //     case 3333:
-        //     printf("se guardo el dato 3333\n");
-        //     sem_wait(&escribiendo);
-        //     consumos_totales++;
-        //     fichero3 = fopen("tres.txt","a");
-        //     fprintf(fichero3,"%d\n",data1);
-        //     sem_post(&escribiendo);
-        //     sem_post(&crit_sec[0]);
-        //     break;
-
-        //     case 4444:
-        //     printf("se guardo el dato 4444\n");
-        //     sem_wait(&escribiendo);
-        //     consumos_totales++;
-        //     fichero4 = fopen("cuatros.txt","a");
-        //     fprintf(fichero4,"%d\n",data1);
-        //     sem_post(&escribiendo);
-        //     sem_post(&crit_sec[0]);
-        //     break;                    
-        // }
     }   
 }
 
@@ -514,6 +268,7 @@ void escribir_txt(int crit_sec_num, int numero_guardar){
             sem_wait(&escribiendo);
             printf("se guardo el dato 1111\n");
             consumos_totales++;
+            printf("%d\n",consumos_totales);
             fichero1 = fopen("unos.txt","a");
             fprintf(fichero1,"%d\n",numero_guardar);
             sem_post(&escribiendo);
@@ -524,6 +279,7 @@ void escribir_txt(int crit_sec_num, int numero_guardar){
             sem_wait(&escribiendo);
             printf("se guardo el dato 2222\n");
             consumos_totales++;
+            printf("%d\n",consumos_totales);
             fichero2 = fopen("doses.txt","a");
             fprintf(fichero2,"%d\n",numero_guardar);
             sem_post(&escribiendo);
@@ -534,6 +290,7 @@ void escribir_txt(int crit_sec_num, int numero_guardar){
             sem_wait(&escribiendo);
             printf("se guardo el dato 3333\n");
             consumos_totales++;
+            printf("%d\n",consumos_totales);
             fichero3 = fopen("tres.txt","a");
             fprintf(fichero3,"%d\n",numero_guardar);
             sem_post(&escribiendo);
@@ -544,6 +301,7 @@ void escribir_txt(int crit_sec_num, int numero_guardar){
             sem_wait(&escribiendo);
             printf("se guardo el dato 4444\n");
             consumos_totales++;
+            printf("%d\n",consumos_totales);
             fichero4 = fopen("cuatros.txt","a");
             fprintf(fichero4, "%d\n",numero_guardar);
             sem_post(&escribiendo);
