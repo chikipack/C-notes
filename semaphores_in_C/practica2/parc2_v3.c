@@ -111,10 +111,6 @@ void producir(int contador, int dato){
     for(int i=0;i<PRODUCCIONES;i++){
         sem_wait(&in_main_section);
             preguntar(count, dato);
-            //sem_getvalue(&in_main_section,&value);
-            //printf("valor del semaforo: %d\n",value);
-            //printf("produccion #%d\n",count);
-            // printf("dato: %d\n",dato);
         sem_post(&out_main_section);
     }
 
@@ -123,8 +119,6 @@ void producir(int contador, int dato){
 void * consumer(void * no){
     int *thread = (int*)no;
     printf("\nConsumer %d created-ID %d",*thread,pthread_self());
-    //este for nomas es para ver que jale 
-    //debemos de quitarlo y usar un while que pueda terminar de alguna forma
     if (*thread == 1 || *thread == 2){
         for (int i = 0; i<13333; i++){
             consumir();
@@ -134,16 +128,6 @@ void * consumer(void * no){
         consumir();
         }
     }
-    
-    
-    // for (int i = 0; i<400; i++){
-    //     consumir();
-    // }
-    
-    
-    // while(consumos_totales<=799){
-    //    consumir();
-    // }
 }
 
 
