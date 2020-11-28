@@ -5,7 +5,7 @@
 #include <errno.h>
 #include <unistd.h>
 #define SHARED 1
-#define PRODUCCIONES 200
+#define PRODUCCIONES 10000
 
 int value;
 int consumos_totales=0;
@@ -126,11 +126,11 @@ void * consumer(void * no){
     //este for nomas es para ver que jale 
     //debemos de quitarlo y usar un while que pueda terminar de alguna forma
     if (*thread == 1 || *thread == 2){
-        for (int i = 0; i<266; i++){
+        for (int i = 0; i<13333; i++){
             consumir();
         }
     }else{
-        for (int i = 0; i<268; i++){
+        for (int i = 0; i<13334; i++){
         consumir();
         }
     }
@@ -271,6 +271,7 @@ void escribir_txt(int crit_sec_num, int numero_guardar){
             printf("%d\n",consumos_totales);
             fichero1 = fopen("unos.txt","a");
             fprintf(fichero1,"%d\n",numero_guardar);
+            fclose(fichero1);
             sem_post(&escribiendo);
             sem_post(&crit_sec[crit_sec_num]); 
             break;
@@ -282,6 +283,7 @@ void escribir_txt(int crit_sec_num, int numero_guardar){
             printf("%d\n",consumos_totales);
             fichero2 = fopen("doses.txt","a");
             fprintf(fichero2,"%d\n",numero_guardar);
+            fclose(fichero2);
             sem_post(&escribiendo);
             sem_post(&crit_sec[crit_sec_num]);
             break;
@@ -293,6 +295,7 @@ void escribir_txt(int crit_sec_num, int numero_guardar){
             printf("%d\n",consumos_totales);
             fichero3 = fopen("tres.txt","a");
             fprintf(fichero3,"%d\n",numero_guardar);
+            fclose(fichero3);
             sem_post(&escribiendo);
             sem_post(&crit_sec[crit_sec_num]);
             break;
@@ -304,6 +307,7 @@ void escribir_txt(int crit_sec_num, int numero_guardar){
             printf("%d\n",consumos_totales);
             fichero4 = fopen("cuatros.txt","a");
             fprintf(fichero4, "%d\n",numero_guardar);
+            fclose(fichero4);
             sem_post(&escribiendo);
             sem_post(&crit_sec[crit_sec_num]);
             break;   
