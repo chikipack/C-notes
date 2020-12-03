@@ -6,6 +6,7 @@
 #include<arpa/inet.h>
 #include<netinet/in.h>
 #include<netdb.h>
+//
 int main(int argc, char **argv){
 	if(argc<2){ //Especifica los argumentos
 		printf("%s <puerto>\n",argv[0]);

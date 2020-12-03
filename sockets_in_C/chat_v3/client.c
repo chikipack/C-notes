@@ -6,6 +6,7 @@
 #include<sys/socket.h>
 #include<netinet/in.h>
 #include<netdb.h>
+//
 #define h_addr  h_addr_list[0]
 
 int main(int argc, char **argv){
