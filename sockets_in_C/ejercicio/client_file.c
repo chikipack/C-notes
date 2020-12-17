@@ -97,35 +97,6 @@ int main(int argc, char **argv){
 		leidos = fread(buffer, 1, MAX, original_file);
 		in = send(conexion, buffer, 3500, 0);
 		printf("Hola \n");
-		//leidos = fread(buffer, 1, MAX, original_file);
-		// //send message to server
-		// printf("escribe un mensaje:");
-		// bzero(buffer, 100);
-		// fgets(buffer,100,stdin);
-		// printf("sending to server: %s ",buffer);
-		// in = send(conexion, buffer, 100,0);
-		// if(in<0){
-		// 	perror("Client error: writing to server");
-		// 	return 0;
-		// }
-		// if (strncmp("exit",buffer,4)==0){
-		// 	printf("El cliente cerro la conexion, notificando al servidor...");
-		// 	break;
-		// }
-		
-		// printf("esperando respuesta del servidor...\n");
-		// //now recive the response
-		// bzero(buffer,100);
-		// in = recv(conexion, buffer, 100, 0);
-		// if (in < 0) {
-		// 	perror("\nClient Error: Reading from Server");
-		// 	return 0;
-		// }
-		// printf("\nReceived FROM SERVER: %s ",buffer);
-		// if (strncmp("exit", buffer,4)==0){
-		// 	printf("el servidor envio exit...terminando conexion");
-		// 	break;
-		// }
 		
 	}
 	fclose(original_file);
